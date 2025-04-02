@@ -1,82 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thrift Shop Online</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: hsl(240, 100%, 93%);
-            text-align: center;
-            background-image:(image/OIP(5)jpg);
-        }
-        header {
-            background-color: #9eb3f8;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        nav {
-            text-align: center;
-            margin: 20px 0;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;  
-        }
-        nav a:hover {
-            color: #007BFF;
-        }
-        .main-content {
-            text-align: center;
-            padding: 50px 20px;
-        }
-        .main-content h1 {
-            font-size: 2.5em;
-            color: #333;
-        }
-        .main-content p {
-            font-size: 1.2em;
-            color: #555;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-        .service-box {
- background:  white;
- padding: 20px;
- margin: 10px;
- border-radius: 10px;
- box-shadow: 0px 0px 0px rgb(0,0,0,0,1 );
+let attempts = 1;
+let timeout = false;
+let countdownTimer = 10;
 
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    if (timeout) {
+        alert("Please wait 10 seconds before trying again.");
+        return;
+    }
+
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+
+    if (username === "" || password === "") {
+        alert("Both fields are required.");
+        return;
+    }
+
+    const correctUsername = 'admin123';
+    const correctPassword = 'admin123';
+
+    if (username === correctUsername && password === correctPassword) {
+        alert("Login Successful!");
+        window.location.href = "LD1FINALS_2D_DOCTOR.html";
+    } else {
+        document.getElementById('error-message').textContent = "Incorrect username or password. Attempt " + attempts + "/1";
+
+        attempts--;
+
+        if (attempts <= 0) {
+            timeout = true;
+            countdownTimer = 10;
+
+            const countdownInterval = setInterval(function() {
+                document.getElementById('error-message').textContent = "Too many failed attempts. Please wait " + countdownTimer + " seconds.";
+
+                if (countdownTimer <= 0) {
+                    clearInterval(countdownInterval);
+                    timeout = false;
+                    attempts = 1;
+                    document.getElementById('error-message').textContent = "";
+                } else {
+                    countdownTimer--;
+                }
+            }, 1000);
         }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Welcome to My Website</h1>
-        <p></p>
-    </header>
-
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#contact">Contact</a>
-        <a href="#contact">Contact</a>
-    </nav>
-    
-    <div class="main-content">
-        <h1>Welcome to online Thrift Shop</h1>
+    }
+});
