@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: hsl(226, 73%, 63%);
+    margin: 0;
+}
+
+.login-container {
+    background: #90b2d8;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#error-message {
+    text-align: center;
+    font-size: 14px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm" method="POST" action="login.php">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <button type="submit" id="loginBtn">Login</button>
+            <p id="error-message" style="color: red;"></p>
+        </form>
+    </div>
+
+    <script>
+        let attempts = 1;
+let timeout = false;
+let countdownTimer = 10;
+
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    if (timeout) {
+        alert("Please wait 10 seconds before trying again.");
+        return;
+    }
+
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+
+    if (username === "" || password === "") {
+        alert("Both fields are required.");
+        return;
+    }
+
+    const correctUsername = 'admin123';
+    const correctPassword = 'admin123';
+
+    if (username === correctUsername && password === correctPassword) {
+        alert("Login Successful!");
+        window.location.href = "LD1FINALS_2D_DOCTOR.html";
+    } else {
+        document.getElementById('error-message').textContent = "Incorrect username or password. Attempt " + attempts + "/1";
+
+        attempts--;
+
+        if (attempts <= 0) {
+            timeout = true;
+            countdownTimer = 10;
+
+            const countdownInterval = setInterval(function() {
+                document.getElementById('error-message').textContent = "Too many failed attempts. Please wait " + countdownTimer + " seconds.";
+
+                if (countdownTimer <= 0) {
+                    clearInterval(countdownInterval);
+                    timeout = false;
+                    attempts = 1;
+                    document.getElementById('error-message').textContent = "";
+                } else {
+                    countdownTimer--;
+                }
+            }, 1000);
+        }
+    }
+});
+
+    </script>
+</body>
+</html>
