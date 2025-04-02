@@ -1,4 +1,4 @@
-let attempts = 3;
+let attempts = 1;
 let timeout = false;
 let countdownTimer = 10;
 
@@ -25,7 +25,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         alert("Login Successful!");
         window.location.href = "LD1FINALS_2D_DOCTOR.html";
     } else {
-        document.getElementById('error-message').textContent = "Incorrect username or password. Attempt " + attempts + "/3";
+        document.getElementById('error-message').textContent = "Incorrect username or password. Attempt " + attempts + "/1";
 
         attempts--;
 
@@ -39,7 +39,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
                 if (countdownTimer <= 0) {
                     clearInterval(countdownInterval);
                     timeout = false;
-                    attempts = 3;
+                    attempts = 1;
                     document.getElementById('error-message').textContent = "";
                 } else {
                     countdownTimer--;
