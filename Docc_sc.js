@@ -1,6 +1,6 @@
-
-let attempts = 3; 
+let attempts = 3;
 let timeout = false;
+let countdownTimer = 10;
 
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -13,31 +13,38 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
 
-    
     if (username === "" || password === "") {
         alert("Both fields are required.");
         return;
     }
 
-   
-    const correctUsername = 'admin123'; 
-    const correctPassword = 'admin123'; 
+    const correctUsername = 'admin123';
+    const correctPassword = 'admin123';
 
     if (username === correctUsername && password === correctPassword) {
         alert("Login Successful!");
-        window.location.href = "LD1FINALS_2D_DOCTOR.html"; 
+        window.location.href = "LD1FINALS_2D_DOCTOR.html";
     } else {
-       
-        document.getElementById('error-message').textContent = "Incorrect username or password. Attempt " + attempts + "/1";
+        document.getElementById('error-message').textContent = "Incorrect username or password. Attempt " + attempts + "/3";
 
-       
-        if (attempts >= 1) {
+        attempts--;
+
+        if (attempts <= 0) {
             timeout = true;
-            setTimeout(() => {
-                timeout = false;
-                attempts = 0; 
-                document.getElementById('error-message').textContent = "";
-            }, 10000); 
+            countdownTimer = 10;
+
+            const countdownInterval = setInterval(function() {
+                document.getElementById('error-message').textContent = "Too many failed attempts. Please wait " + countdownTimer + " seconds.";
+
+                if (countdownTimer <= 0) {
+                    clearInterval(countdownInterval);
+                    timeout = false;
+                    attempts = 3;
+                    document.getElementById('error-message').textContent = "";
+                } else {
+                    countdownTimer--;
+                }
+            }, 1000);
         }
     }
 });
